@@ -1,0 +1,21 @@
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* Adjust background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1; /* Initial opacity */
+    transition: opacity 0.5s ease-in-out; /* Fade transition */
+    z-index: 50; /* Ensure it's on top of other elements */
+  }
+  
+  .splash-screen.hidden {
+    opacity: 0; /* Hidden opacity */
+  }
+html{
+    background-color: #F2F2F2;
+}

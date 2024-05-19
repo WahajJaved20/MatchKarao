@@ -12,7 +12,7 @@ const AuthenticationPage = () => {
     const navigate = useNavigate();
       useEffect(() => {
         const getUser = async () => {
-          const response = await fetch("http://localhost:5000/verifyJWT", {
+          const response = await fetch("https://match-karao-backend.vercel.app/verifyJWT", {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ const AuthenticationPage = () => {
           return;
         }
         setLoading(true);
-          const result = await fetch(`http://localhost:5000/login`, {
+          const result = await fetch(`https://match-karao-backend.vercel.app/login`, {
                 method: 'POST',
                 headers: {
                     'content-type': 'application/json',

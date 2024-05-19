@@ -10,7 +10,7 @@ export default {
         'primaryColor': '#FFFFFF',
         'secondaryColor' : "#A6EE70",
         'tertiaryColor' : "#D4F4B3",
-        'loginKaDabba' : "#087177"
+        'loginKaDabba' : "#087177",
       },
       fontFamily: {
         Changa: ['Changa', 'sans-serif'],
@@ -18,6 +18,9 @@ export default {
       fontSize: {
         'large' : '50px'
       },
+      textColor:{
+        "ticketText" : "#087177"
+      }
     },
   },
   plugins: [],

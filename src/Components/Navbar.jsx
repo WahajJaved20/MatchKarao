@@ -1,12 +1,20 @@
 
 import React, {useState} from 'react';
 import { logo} from '../assets';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Navbar = () => {
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false);
     const toggleNavbar = () => {
         setIsOpen(!isOpen);
     };
+    const handleLogout = () => {
+      localStorage.removeItem('token');
+      toast.success('Logout Successful');
+      navigate('/');
+    }
     return (
 <nav className='bg-secondaryColor'>
   <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pb-2 ">
@@ -39,9 +47,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
-        <Link to="/">
-          <div className="block py-2 px-3 text-black rounded  md:border-0 font-Changa font-bold md:p-0 hover:text-white ">Sign Out</div>
-          </Link>
+          <a href="#" onClick={handleLogout} className="block py-2 px-3 text-black rounded  md:border-0 font-Changa font-bold md:p-0 hover:text-white ">Sign Out</a>
         </li>
       </ul>
     </div>

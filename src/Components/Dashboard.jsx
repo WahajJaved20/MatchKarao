@@ -19,14 +19,14 @@ const Ticket = ({ teamOnePicture, teamTwoPicture, title, date, details, seat, ti
           <p className="font-Changa font-bold text-2xl text-ticketText ">VS</p>
           <div className="flex flex-row items-center">
             <img class="w-[60px] h-[60px] rounded-full bg-secondaryColor" src={logo} alt="Rounded avatar" />
-            <p className="ml-2 font-Changa font-bold text-xl text-ticketText ">RETARD</p>
+            <p className="ml-2 font-Changa font-bold text-xl text-ticketText ">ITTEHAD</p>
           
             </div>
 
           </div>
           <div className="ml-4 flex flex-row mt-2 items-center">
             <img src={location} className="w-6 h-6"/>
-            <p className="ml-4 font-Changa font-bold text-lg text-ticketText ">TWADO GHAR</p>
+            <p className="ml-4 font-Changa font-bold text-lg text-ticketText ">YAHAN WAHAN</p>
           </div>
           <div className="ml-4 flex flex-row mt-2 items-center">
             <img src={calendar} className="w-6 h-6"/>

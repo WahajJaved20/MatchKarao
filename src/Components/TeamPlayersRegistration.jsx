@@ -53,11 +53,14 @@ const defaultInformation = {
 }
 const TeamPlayersRegistration = () => {
   const [loading, setLoading] = React.useState(false);
+  const location = useLocation();
+  const documentID = location.state?.documentID;
   const [playersInformation, setPlayerInformation] = React.useState([defaultInformation]);
   const navigate = useNavigate();
 
   useEffect(() => {
-  
+    console.log(documentID)
+    console.log(location.state)
   }, [playersInformation])
   return (<>
     {loading ? <LoadingBar /> : (

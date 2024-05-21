@@ -10,55 +10,55 @@ const AuthenticationPage = () => {
     const [password, setPassword] = React.useState('');
     const [loading, setLoading] = React.useState(false);
     const navigate = useNavigate();
-      useEffect(() => {
+    useEffect(() => {
         const getUser = async () => {
-          const response = await fetch("https://match-karao-backend.vercel.app/verifyJWT", {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ jwtToken: localStorage.getItem('token') }),
-          });
-          const data = await response.json();
-          if(data.type === "Failed"){
-
-          }else{
-              toast.info("Already Logged In");
-              navigate("/dashboard");
-          }
-      }
-      if(localStorage.getItem('token')){
-        getUser()
-      }
-      }, [])
-      const handleSubmit = async () => {
-        if(teamName.length === 0 || password.length === 0){
-          toast.error('Please fill all the fields');
-          return;
-        }
-        setLoading(true);
-          const result = await fetch(`https://match-karao-backend.vercel.app/login`, {
+            const response = await fetch("https://match-karao-backend.vercel.app/verifyJWT", {
                 method: 'POST',
                 headers: {
-                    'content-type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    teamName: teamName,
-                    password: password
-                }),
-            }).then((resp) => resp.json());
-            if(result.type === "Success"){
-              console.log(result.message)
-              localStorage.setItem('token', result.message);
-              toast.success('Login Successful');
-              setLoading(false);
-              navigate('/dashboard');
-            }else{
-              console.log(result)
-              setLoading(false);
-              toast.error(result.message);
+                body: JSON.stringify({ jwtToken: localStorage.getItem('token') }),
+            });
+            const data = await response.json();
+            if (data.type === "Failed") {
+
+            } else {
+                toast.info("Already Logged In");
+                navigate("/dashboard");
             }
         }
+        if (localStorage.getItem('token')) {
+            getUser()
+        }
+    }, [])
+    const handleSubmit = async () => {
+        if (teamName.length === 0 || password.length === 0) {
+            toast.error('Please fill all the fields');
+            return;
+        }
+        setLoading(true);
+        const result = await fetch(`https://match-karao-backend.vercel.app/login`, {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                teamName: teamName,
+                password: password
+            }),
+        }).then((resp) => resp.json());
+        if (result.type === "Success") {
+            console.log(result.message)
+            localStorage.setItem('token', result.message);
+            toast.success('Login Successful');
+            setLoading(false);
+            navigate('/dashboard');
+        } else {
+            console.log(result)
+            setLoading(false);
+            toast.error(result.message);
+        }
+    }
     return (<>
         {loading ? <LoadingBar /> : (
             <>
@@ -73,13 +73,13 @@ const AuthenticationPage = () => {
                             <button
                                 className={`flex-1 mb-2 text-xl font-Changa font-bold border-black rounded-full 
         mb-2 md:mb-0 md:mr-2 bg-loginKaDabba text-white border-4`}
-                                >
+                            >
                                 LOGIN
                             </button>
                             <button
                                 className={`flex-1 text-xl font-Changa font-bold border-black 
         rounded-full md:ml-2 text-black bg-tertiaryColor`}
-                                onClick={()=>{
+                                onClick={() => {
                                     setLoading(true);
                                     navigate("/registerPage")
                                 }}>

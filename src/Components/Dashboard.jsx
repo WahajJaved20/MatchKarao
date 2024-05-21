@@ -78,6 +78,7 @@ const Dashboard = () => {
   const [leftSideHeight, setLeftSideHeight] = useState(1000);
   const initialRightSideHeightRef = useRef(0);
   useEffect(() => {
+    console.log(teamID)
     const timeoutId = setTimeout(() => {
       setShowSplash(false);
       // navigate('/your-destination-page'); // Navigate on timeout

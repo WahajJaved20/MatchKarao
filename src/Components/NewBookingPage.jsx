@@ -109,7 +109,6 @@ const NewBookingPage = ({teamID}) => {
       listLocations()
       listAvailableTimes()
     }
-    console.log(location)
   })
   const handleSubmit = async () => {
     if (selectedValue.length === 0 || location.length === 0 || date.length === 0 || startTime.length === 0
@@ -127,10 +126,10 @@ const NewBookingPage = ({teamID}) => {
       startTime: startTime,
       endTime: endTime,
       price: price,
-      teamID: teamID
+      teamID: localStorage.getItem("teamID")
     }
     console.log(formData)
-    const result = await fetch(`http://localhost:5000/createNewBooking`, {
+    const result = await fetch(`https://match-karao-backend.vercel.app/createNewBooking`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

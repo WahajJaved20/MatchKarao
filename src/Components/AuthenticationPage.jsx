@@ -24,7 +24,7 @@ const AuthenticationPage = () => {
 
             } else {
                 toast.info("Already Logged In");
-                navigate("/dashboard", {state: {teamID: data.teamID}});
+                navigate("/dashboard", {state: {teamID: localStorage.getItem("teamID")}});
             }
         }
         if (localStorage.getItem('token')) {
@@ -52,7 +52,8 @@ const AuthenticationPage = () => {
             localStorage.setItem('token', result.message);
             toast.success('Login Successful');
             setLoading(false);
-            navigate('/dashboard');
+            localStorage.setItem("teamID",result.teamID)
+            navigate('/dashboard', {state: {teamID: result.teamID}});
         } else {
             console.log(result)
             setLoading(false);

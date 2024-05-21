@@ -24,7 +24,7 @@ const AuthenticationPage = () => {
 
             } else {
                 toast.info("Already Logged In");
-                navigate("/dashboard");
+                navigate("/dashboard", {state: {teamID: data.teamID}});
             }
         }
         if (localStorage.getItem('token')) {

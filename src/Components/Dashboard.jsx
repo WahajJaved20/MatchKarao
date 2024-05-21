@@ -4,14 +4,14 @@ import { calendar, location, logo } from "../assets";
 import Navbar from "./Navbar";
 import "./splash.css"
 import { ticketBackground } from "../assets";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import LoadingScreen from "./LoadingScreen";
 
-function PlusButton() {
+function PlusButton({teamID}) {
   const navigate = useNavigate();
   return (
     <button onClick={() => {
-      navigate("/newBooking")
+      navigate("/newBooking", {state: {teamID: teamID}})
     }}
       className="fixed bottom-0 right-0 m-8 bg-secondaryColor hover:bg-loginKaDabba text-black text-2xl hover:text-white font-bold w-16 h-16 rounded-full shadow-md"
     >
@@ -65,6 +65,8 @@ const Ticket = ({ teamOnePicture, teamTwoPicture, title, date, details, seat, ti
 };
 
 const Dashboard = () => {
+  const curr = useLocation();
+  const teamID = curr.state?.teamID;
   const [showSplash, setShowSplash] = useState(true);
   const [isHidden, setIsHidden] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -171,7 +173,7 @@ const Dashboard = () => {
 
       </>
     )}
-    <PlusButton />
+    <PlusButton teamID={teamID}/>
   </>)
 }
 export default Dashboard;

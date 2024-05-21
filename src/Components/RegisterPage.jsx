@@ -107,7 +107,7 @@ const RegisterPage = () => {
             return;
         }
         setLoading(true);
-        const result = await fetch(`http://localhost:5000/register`, {
+        const result = await fetch(`https://match-karao-backend.vercel.app/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

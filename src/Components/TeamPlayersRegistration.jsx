@@ -122,7 +122,7 @@ const TeamPlayersRegistration = () => {
       }
     }
     setLoading(true);
-    const result = await fetch(`http://localhost:5000/addTeamMembers`, {
+    const result = await fetch(`https://match-karao-backend.vercel.app/addTeamMembers`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

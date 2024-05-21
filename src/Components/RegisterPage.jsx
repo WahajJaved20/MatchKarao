@@ -51,58 +51,58 @@ const RegisterPage = () => {
     const [image, setImage] = React.useState(null);
     const [formData, setFormData] = React.useState({
         date: new Date().toLocaleDateString(),
-      });
-      const handleInputChange = (event) => {
+    });
+    const handleInputChange = (event) => {
         if (event.target.name === 'teamName') {
-          setTeamName(event.target.value);
+            setTeamName(event.target.value);
         } else if (event.target.name === 'password') {
-          setPassword(event.target.value);
+            setPassword(event.target.value);
         } else if (event.target.name === 'confirmPassword') {
             setConfirmPassword(event.target.value);
         } else if (event.target.name === 'location') {
             setLocation(event.target.value);
         }
         setFormData({ ...formData, [event.target.name]: event.target.value });
-      };
-      async function changeImageSize(files){
+    };
+    async function changeImageSize(files) {
         try {
-          const options = {
-            maxSizeMB: 0.01, 
-            maxWidthOrHeight: 400, 
-          };
-          const compressedFile = await imageCompression(files, options);
-          return compressedFile
+            const options = {
+                maxSizeMB: 0.01,
+                maxWidthOrHeight: 400,
+            };
+            const compressedFile = await imageCompression(files, options);
+            return compressedFile
         } catch (error) {
-          console.error('Image compression failed:', error);
+            console.error('Image compression failed:', error);
         }
-      }
+    }
     const handleImageChange = async (e) => {
         let files = e.target.files;
         console.log(files)
         if (files.length <= 1) {
-        files = await changeImageSize(files[0])
-        console.log(files)
-          var reader = new FileReader();
-          reader.readAsDataURL(files);
-          
-          reader.onloadend = (e) => {
-            
-            setImage([reader.result]);
-            setFormData({ ...formData, image: reader.result });
-          };
-          toast.success('Image loaded successfully.');
+            files = await changeImageSize(files[0])
+            console.log(files)
+            var reader = new FileReader();
+            reader.readAsDataURL(files);
+
+            reader.onloadend = (e) => {
+
+                setImage([reader.result]);
+                setFormData({ ...formData, image: reader.result });
+            };
+            toast.success('Image loaded successfully.');
         } else {
-          toast.error('Maximum 1 image allowed.');
-          e.target.value = null;
-          setImage([]);
+            toast.error('Maximum 1 image allowed.');
+            e.target.value = null;
+            setImage([]);
         }
-      };
+    };
     const handleSubmit = async () => {
         if (teamName.length === 0 || password.length === 0 || confirmPassword.length === 0 || location.length === 0 || image == null) {
             toast.error('Please fill all the fields');
             return;
         }
-        if(password !== confirmPassword){
+        if (password !== confirmPassword) {
             toast.error("The Passwords are not same");
             return;
         }
@@ -110,7 +110,7 @@ const RegisterPage = () => {
         const result = await fetch(`http://localhost:5000/register`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(formData),
         }).then((resp) => resp.json());
@@ -119,7 +119,7 @@ const RegisterPage = () => {
             localStorage.setItem('token', result.message);
             toast.success('Login Successful');
             setLoading(false);
-            navigate('/teamPlayerRegistration', {state: {documentID: result.docID}});
+            navigate('/teamPlayerRegistration', { state: { documentID: result.docID, teamName: teamName } });
         } else {
             console.log(result)
             setLoading(false);
@@ -145,8 +145,8 @@ const RegisterPage = () => {
                                 type="text"
                                 value={teamName}
                                 isRequired={true}
-                            // error={error.teamName}
-                            handleChange={handleInputChange}
+                                // error={error.teamName}
+                                handleChange={handleInputChange}
                             />
                             <InputBox
                                 label="PASSWORD"
@@ -154,8 +154,8 @@ const RegisterPage = () => {
                                 type="password"
                                 value={password}
                                 isRequired={true}
-                            // error={error.teamName}
-                            handleChange={handleInputChange}
+                                // error={error.teamName}
+                                handleChange={handleInputChange}
                             />
                             <InputBox
                                 label="CONFIRM PASSWORD"
@@ -163,8 +163,8 @@ const RegisterPage = () => {
                                 type="password"
                                 value={confirmPassword}
                                 isRequired={true}
-                            // error={error.teamName}
-                            handleChange={handleInputChange}
+                                // error={error.teamName}
+                                handleChange={handleInputChange}
                             />
                             <InputBox
                                 label="LOCATION"
@@ -172,8 +172,8 @@ const RegisterPage = () => {
                                 type="text"
                                 value={location}
                                 isRequired={true}
-                            // error={error.teamName}
-                            handleChange={handleInputChange}
+                                // error={error.teamName}
+                                handleChange={handleInputChange}
                             />
                             <div className='flex flex-row justify-center'>
                                 <button

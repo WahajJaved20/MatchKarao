@@ -8,6 +8,7 @@ import RegisterPage from './Components/RegisterPage.jsx'
 import TeamPlayersRegistration from './Components/TeamPlayersRegistration.jsx'
 import SplashScreen from './Components/SplashScreen.jsx'
 import Dashboard from './Components/Dashboard.jsx'
+import NewBookingPage from './Components/NewBookingPage.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/registerPage" element={<RegisterPage />} />
         <Route path="/teamPlayerRegistration" element={<TeamPlayersRegistration />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/newBooking" element={<NewBookingPage />} />
       </Routes>
     </BrowserRouter>
     <ToastContainer

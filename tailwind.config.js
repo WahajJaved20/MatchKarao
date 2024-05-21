@@ -11,6 +11,7 @@ export default {
         'secondaryColor' : "#A6EE70",
         'tertiaryColor' : "#D4F4B3",
         'loginKaDabba' : "#087177",
+        'ticketBackground': "#F2F2F2"
       },
       fontFamily: {
         Changa: ['Changa', 'sans-serif'],

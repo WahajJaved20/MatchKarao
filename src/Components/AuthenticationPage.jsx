@@ -24,7 +24,7 @@ const AuthenticationPage = () => {
 
             } else {
                 toast.info("Already Logged In");
-                navigate("/dashboard", {state: {teamID: localStorage.getItem("teamID")}});
+                navigate("/dashboard", { state: { teamID: localStorage.getItem("teamID") } });
             }
         }
         if (localStorage.getItem('token')) {
@@ -32,8 +32,12 @@ const AuthenticationPage = () => {
         }
     }, [])
     const handleSubmit = async () => {
-        if (teamName.length === 0 || password.length === 0) {
-            toast.error('Please fill all the fields');
+        if (teamName.length === 0) {
+            toast.error('Please Enter the team name');
+            return;
+        }
+        if (password.length === 0) {
+            toast.error('Please Enter the Password');
             return;
         }
         setLoading(true);
@@ -48,14 +52,12 @@ const AuthenticationPage = () => {
             }),
         }).then((resp) => resp.json());
         if (result.type === "Success") {
-            console.log(result.message)
             localStorage.setItem('token', result.message);
             toast.success('Login Successful');
             setLoading(false);
-            localStorage.setItem("teamID",result.teamID)
-            navigate('/dashboard', {state: {teamID: result.teamID}});
+            localStorage.setItem("teamID", result.teamID)
+            navigate('/dashboard', { state: { teamID: result.teamID } });
         } else {
-            console.log(result)
             setLoading(false);
             toast.error(result.message);
         }

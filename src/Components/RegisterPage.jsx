@@ -78,10 +78,8 @@ const RegisterPage = () => {
     }
     const handleImageChange = async (e) => {
         let files = e.target.files;
-        console.log(files)
         if (files.length <= 1) {
             files = await changeImageSize(files[0])
-            console.log(files)
             var reader = new FileReader();
             reader.readAsDataURL(files);
 
@@ -98,12 +96,28 @@ const RegisterPage = () => {
         }
     };
     const handleSubmit = async () => {
-        if (teamName.length === 0 || password.length === 0 || confirmPassword.length === 0 || location.length === 0 || image == null) {
-            toast.error('Please fill all the fields');
+        if (teamName.length === 0) {
+            toast.error('Please enter the Team name');
+            return;
+        }
+        if (password.length === 0) {
+            toast.error('Please enter the password');
+            return;
+        }
+        if (confirmPassword.length === 0) {
+            toast.error('Please enter the password again');
+            return;
+        }
+        if (location.length === 0) {
+            toast.error('Please enter your location');
             return;
         }
         if (password !== confirmPassword) {
-            toast.error("The Passwords are not same");
+            toast.error("Passwords and Confirmed Password should be same.");
+            return;
+        }
+        if (image == null) {
+            toast.error("Please upload the Team Logo.");
             return;
         }
         setLoading(true);
@@ -115,13 +129,11 @@ const RegisterPage = () => {
             body: JSON.stringify(formData),
         }).then((resp) => resp.json());
         if (result.type === "Success") {
-            console.log(result.message)
             localStorage.setItem('token', result.message);
             toast.success('Login Successful');
             setLoading(false);
             navigate('/teamPlayerRegistration', { state: { documentID: result.docID, teamName: teamName } });
         } else {
-            console.log(result)
             setLoading(false);
             toast.error(result.message);
         }
@@ -145,7 +157,6 @@ const RegisterPage = () => {
                                 type="text"
                                 value={teamName}
                                 isRequired={true}
-                                // error={error.teamName}
                                 handleChange={handleInputChange}
                             />
                             <InputBox
@@ -154,7 +165,6 @@ const RegisterPage = () => {
                                 type="password"
                                 value={password}
                                 isRequired={true}
-                                // error={error.teamName}
                                 handleChange={handleInputChange}
                             />
                             <InputBox
@@ -163,7 +173,6 @@ const RegisterPage = () => {
                                 type="password"
                                 value={confirmPassword}
                                 isRequired={true}
-                                // error={error.teamName}
                                 handleChange={handleInputChange}
                             />
                             <InputBox
@@ -172,7 +181,6 @@ const RegisterPage = () => {
                                 type="text"
                                 value={location}
                                 isRequired={true}
-                                // error={error.teamName}
                                 handleChange={handleInputChange}
                             />
                             <div className='flex flex-row justify-center'>

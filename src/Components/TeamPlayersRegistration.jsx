@@ -60,19 +60,16 @@ const TeamPlayersRegistration = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(documentID)
-    console.log(location.state)
   }, [playersInformation])
 
   const handleInputChange = (event, index) => {
-    console.log(index);
     setPlayerInformation((prevState) => {
-      const updatedPlayersInformation = prevState.map((player, i) => 
+      const updatedPlayersInformation = prevState.map((player, i) =>
         i === index ? { ...player, [event.target.name]: event.target.value } : player
       );
       return updatedPlayersInformation;
     });
-    
+
   };
   async function changeImageSize(files) {
     try {
@@ -110,38 +107,36 @@ const TeamPlayersRegistration = () => {
     }
   };
   const handleSubmit = async () => {
-    for(var i=0;i<playersInformation.length;i++){
-      for(var key in playersInformation[i]){
-        if(key === "picture"){
+    for (var i = 0; i < playersInformation.length; i++) {
+      for (var key in playersInformation[i]) {
+        if (key === "picture") {
           continue;
         }
-        if(playersInformation[i][key].length === 0){
-          toast.error('Please fill all the fields');
+        if (playersInformation[i][key].length === 0) {
+          toast.error('Please fill the ' + key);
           return;
         }
       }
     }
     setLoading(true);
     const result = await fetch(`https://match-karao-backend.vercel.app/addTeamMembers`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({teamName:teamName, teamID: documentID, playersInformation: playersInformation}),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ teamName: teamName, teamID: documentID, playersInformation: playersInformation }),
     }).then((resp) => resp.json());
     if (result.type === "Success") {
-        console.log(result.message)
-        localStorage.setItem('token', result.message);
-        toast.success('Team Members Successfully Added');
-        toast.info('Please Login Again');
-        setLoading(false);
-        navigate('/',);
+      localStorage.setItem('token', result.message);
+      toast.success('Team Members Successfully Added');
+      toast.info('Please Login Again');
+      setLoading(false);
+      navigate('/',);
     } else {
-        console.log(result)
-        setLoading(false);
-        toast.error(result.message);
+      setLoading(false);
+      toast.error(result.message);
     }
-}
+  }
   return (<>
     {loading ? <LoadingBar /> : (
       <>
@@ -153,7 +148,7 @@ const TeamPlayersRegistration = () => {
             </h1>
             {playersInformation.map((playerInfo, index) => (
               <>
-                <h1 className={`font-Changa text-3xl font-bold mb-2`}>Player # {index + 1}: </h1>
+                <h1 className={`font-Changa text-3xl font-bold mb-2`}>Player # {index + 1}: {index == 0 ? "(C)" : ""} </h1>
                 <h1 className={`font-Changa text-2xl font-bold mb-2`}>Upload Player Picture*</h1>
                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 " id="file_input" type="file" accept="image/*" onChange={(e) => {
                   handleImageChange(e, index)

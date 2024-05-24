@@ -126,7 +126,8 @@ const NewBookingPage = ({teamID}) => {
       startTime: startTime,
       endTime: endTime,
       price: price,
-      teamID: localStorage.getItem("teamID")
+      teamID: localStorage.getItem("teamID"),
+      venue: venue
     }
     console.log(formData)
     const result = await fetch(`https://match-karao-backend.vercel.app/createNewBooking`, {
@@ -140,7 +141,7 @@ const NewBookingPage = ({teamID}) => {
         console.log(result.message)
         toast.success('Booking Successfully Created');
         setLoading(false);
-        // navigate('/teamPlayerRegistration', { state: { documentID: result.docID, teamName: teamName } });
+        navigate('/');
     } else {
         console.log(result)
         setLoading(false);

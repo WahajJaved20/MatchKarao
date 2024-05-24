@@ -20,7 +20,7 @@ const Navbar = () => {
     }
     useEffect(()=>{
       async function getNotifications(){
-          const result = await fetch(`http://localhost:5000/getNotificationsExist`, {
+          const result = await fetch(`https://match-karao-backend.vercel.app/getNotificationsExist`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

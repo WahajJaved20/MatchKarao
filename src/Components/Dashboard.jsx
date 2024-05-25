@@ -46,7 +46,7 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 		}).then((resp) => resp.json());
 		if (result.type === "Success") {
 			await helper();
-			toast.success("Booking Successful")
+			toast.success("Request Sent")
 			setLoading(false);
 		} else {
 			console.log(result)
@@ -227,7 +227,6 @@ const Dashboard = () => {
 		console.log(result)
 		if (result.type === "Success") {
 			shortlistHalfBookings(result.results);
-			toast.success("Cleared All Filters")
 			setLoading(false);
 		} else {
 			console.log(result)

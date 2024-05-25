@@ -68,30 +68,31 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 						</div>
 						<p className="font-Changa font-bold text-2xl text-ticketText ">VS</p>
 						<div className="flex flex-row items-center">
-							<img class="w-[60px] h-[60px] rounded-full bg-secondaryColor" src={defaultAvatar} alt="Rounded avatar" />
-							<p className="ml-2 font-Changa font-bold text-xl text-ticketText ">TBD</p>
+							<img class="w-[60px] h-[60px] rounded-full bg-secondaryColor" src={halfBooking.teamTwoImage ? halfBooking.teamTwoImage : defaultAvatar} alt="Rounded avatar" />
+							<p className="ml-2 font-Changa font-bold text-xl text-ticketText ">{halfBooking.teamTwoName ? halfBooking.teamTwoName : "TBD"}</p>
 
 						</div>
 
 					</div>
 					<div className="ml-4 flex flex-row mt-2 items-center">
 						<img src={location} className="w-6 h-6" />
-						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">{halfBooking.location}</p>
+						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">{halfBooking.venue}</p>
 						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">|</p>
 						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">Rs. {halfBooking.price}</p>
 					</div>
 					<div className="ml-4 flex flex-row mt-2 items-center">
 						<img src={calendar} className="w-6 h-6" />
-						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">{halfBooking.venue ? halfBooking.venue : "idhar"}</p>
+						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">{halfBooking.date}</p>
 						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">|</p>
 						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">{halfBooking.startTime} - {halfBooking.endTime}</p>
 					</div>
 					<button
 						onClick={AskToPlay}
+						disabled={halfBooking.teamTwoID}
 						className={`px-2 border-2 border-black min-h-6  text-black font-Changa text-sm mt-2 w-full hover:bg-loginKaDabba hover:text-white`}
 					>
 						<h1 className="text-lg font-extrabold text-ticketText hover:text-white">
-							Ask To Play
+							{halfBooking.teamTwoID ? "BOOKED!" : "Ask To Play"}
 						</h1>
 					</button>
 				</div>
@@ -113,7 +114,9 @@ const Dashboard = () => {
 	// const [price, setPrice] = useState("");
 	const [leftSideHeight, setLeftSideHeight] = useState(1000);
 	const initialRightSideHeightRef = useRef(0);
-	const [halfBookings, setHalfBookings] = useState(null)
+	const [confirmedHalfBooking, setConfirmedHalfBooking] = useState(null)
+	const [unconfirmedHalfBookings, setUnconfirmedHalfBookings] = useState(null)
+
 	const [locations, setLocations] = useState([]);
 	function listLocations() {
 		const locs = constants["locationWithPrice"]
@@ -144,14 +147,15 @@ const Dashboard = () => {
 	//   return () => window.removeEventListener('scroll', handleScroll);
 	// }, []);
 	async function getHalfBooking() {
-		const result = await fetch(`https://match-karao-backend.vercel.app/getHalfBookings`, {
+		const result = await fetch(`http://localhost:5000/getHalfBookings`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		}).then((resp) => resp.json());
 		if (result.type === "Success") {
-			setHalfBookings(result.result);
+			shortlistBookings(result.result);
+			console.log(result.result)
 			setLoading(false);
 		} else {
 			console.log(result)
@@ -160,13 +164,26 @@ const Dashboard = () => {
 		}
 	}
 	useEffect(() => {
-		
-		if (halfBookings == null) {
+		if (confirmedHalfBooking == null && unconfirmedHalfBookings == null) {
 			setLoading(true);
 			getHalfBooking();
 		}
 		listLocations();
-	}, [halfBookings])
+	}, [confirmedHalfBooking, unconfirmedHalfBookings])
+	function shortlistBookings(halfBookings) {
+		var confirmed = []
+		var unconfirmed = []
+		const teamID = localStorage.getItem("teamID");
+		for (var i = 0; i < halfBookings.length; i++) {
+			if (halfBookings[i].bookingConfirmation === "true" && (halfBookings[i].teamID == teamID || halfBookings[i].teamTwoID == teamID)) {
+				confirmed.push(halfBookings[i])
+			} else {
+				unconfirmed.push(halfBookings[i])
+			}
+		}
+		setConfirmedHalfBooking(confirmed);
+		setUnconfirmedHalfBookings(unconfirmed);
+	}
 	async function filterBookings() {
 		setLoading(true)
 		const result = await fetch(`https://match-karao-backend.vercel.app/filterBookings`, {
@@ -183,7 +200,7 @@ const Dashboard = () => {
 		}).then((resp) => resp.json());
 		console.log(result)
 		if (result.type === "Success") {
-			setHalfBookings(result.results);
+			shortlistBookings(result.results);
 			toast.success("Cleared All Filters")
 			setLoading(false);
 		} else {
@@ -313,9 +330,23 @@ const Dashboard = () => {
 						</div>
 					</div>
 					<div className="w-3/5 bg-ticketBackground" id="balls" ref={initialRightSideHeightRef}>
-						{halfBookings ? halfBookings.map((halfBooking, index) => {
-							return <Ticket halfBooking={halfBooking} key={index} helper={getHalfBooking} setLoading={setLoading}/>
-						}) : <div></div>}
+
+						<div className="m-4 flex flex-col">
+							<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">CONFIRMED BOOKINGS</label>
+							<div className="flex flex-row">
+								{confirmedHalfBooking ? confirmedHalfBooking.map((halfBooking, index) => {
+									return <Ticket halfBooking={halfBooking} key={index} helper={getHalfBooking} setLoading={setLoading} />
+								}) : <div></div>}
+							</div>
+						</div>
+						<div className="m-4 flex flex-col">
+							<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">HALF BOOKINGS</label>
+							<div className="flex flex-row">
+								{unconfirmedHalfBookings ? unconfirmedHalfBookings.map((halfBooking, index) => {
+									return <Ticket halfBooking={halfBooking} key={index} helper={getHalfBooking} setLoading={setLoading} />
+								}) : <div></div>}
+							</div>
+						</div>
 					</div>
 				</div>
 			</>

@@ -8,7 +8,8 @@ const NotificationCard = ({ message, setLoading, getNotifications }) => {
     const handleAccept = async () => {
         const notification = message;
         setLoading(true)
-        const result = await fetch(`https://match-karao-backend.vercel.app/acceptPlayRequest`, {
+        // const result = await fetch(`https://match-karao-backend.vercel.app/acceptPlayRequest`, {
+            const result = await fetch(`http://localhost:5000/acceptPlayRequest`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

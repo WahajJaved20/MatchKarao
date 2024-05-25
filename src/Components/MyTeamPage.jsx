@@ -9,7 +9,7 @@ function TeamPage() {
     async function getTeamData() {
         setLoading(true)
         const id = localStorage.getItem("teamID")
-        const result = await fetch(`http://localhost:5000/getTeamMembers`, {
+        const result = await fetch(`https://match-karao-backend.vercel.app/getTeamMembers`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

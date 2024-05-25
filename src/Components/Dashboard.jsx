@@ -147,7 +147,7 @@ const Dashboard = () => {
 	//   return () => window.removeEventListener('scroll', handleScroll);
 	// }, []);
 	async function getHalfBooking() {
-		const result = await fetch(`http://localhost:5000/getHalfBookings`, {
+		const result = await fetch(`https://match-karao-backend.vercel.app/getHalfBookings`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

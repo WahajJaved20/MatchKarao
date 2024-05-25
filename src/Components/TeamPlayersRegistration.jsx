@@ -116,6 +116,7 @@ const TeamPlayersRegistration = () => {
     }
   };
   const handleSubmit = async () => {
+    localStorage.setItem("documentID", documentID);
     for (var i = 0; i < playersInformation.length; i++) {
       for (var key in playersInformation[i]) {
         if (key === "picture") {
@@ -128,25 +129,35 @@ const TeamPlayersRegistration = () => {
       }
     }
     setLoading(true);
-    // const result = await fetch(`https://match-karao-backend.vercel.app/addTeamMembers`, {
-    const result = await fetch(`http://localhost:5000/addTeamMembers`, {
+    try{
+    for(var i=0; i<playersInformation.length; i++){
+      console.log(i)
+      const result = await fetch(`https://match-karao-backend.vercel.app/addTeamMembers`, {
 
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ teamName: teamName, teamID: documentID, playersInformation: playersInformation }),
+      body: JSON.stringify({ teamName: teamName, teamID: localStorage.getItem("documentID"), playersInformation: [playersInformation[i]] }),
     }).then((resp) => resp.json());
-    if (result.type === "Success") {
+    if (result.type === "Success" && i==0) {
       localStorage.setItem('token', result.message);
-      toast.success('Team Members Successfully Added');
-      toast.info('Please Login Again');
-      setLoading(false);
-      navigate('/',);
-    } else {
+      
+    } else if(result.type === "Success"){continue;} else {
       setLoading(false);
       toast.error(result.message);
+      return
     }
+    }
+    setLoading(false);
+    toast.info('Please Login Again');
+    toast.success('Team Members Successfully Added');
+    navigate('/');
+    }catch(error){
+      console.log(error)
+    }
+    
+
   }
   return (<>
     {loading ? <LoadingBar /> : (

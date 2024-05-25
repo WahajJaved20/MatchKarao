@@ -102,9 +102,12 @@ const TeamPlayersRegistration = () => {
       const reader = new FileReader();
       reader.readAsDataURL(resizedImage);
       reader.onloadend = () => {
-        const updatedPlayersInformation = [...playersInformation];
-        updatedPlayersInformation[index].picture = reader.result;
-        setPlayerInformation(updatedPlayersInformation);
+        setPlayerInformation((prevState) => {
+          const updatedPlayersInformation = prevState.map((player, i) =>
+            i === index ? { ...player, [picture]: reader.result } : player
+          );
+          return updatedPlayersInformation;
+        });
         toast.success('Image loaded successfully.');
       };
     } catch (error) {
@@ -154,7 +157,7 @@ const TeamPlayersRegistration = () => {
             </h1>
             {playersInformation.map((playerInfo, index) => (
               <>
-                <h1 className={`font-Changa text-3xl font-bold mb-2`}>Player # {index + 1}: {index == 0 ? "(C)" : ""} </h1>
+                <h1 className={`font-Changa text-3xl font-bold mb-2`}>Player # {index + 1}: {index == 0 ? "(Captain)" : ""} </h1>
                 <h1 className={`font-Changa text-2xl font-bold mb-2`}>Upload Player Picture*</h1>
                 <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 " id="file_input" type="file" accept="image/*" onChange={(e) => {
                   handleImageChange(e, index)

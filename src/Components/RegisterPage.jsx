@@ -130,7 +130,8 @@ const RegisterPage = () => {
         }).then((resp) => resp.json());
         if (result.type === "Success") {
             localStorage.setItem('token', result.message);
-            toast.success('Login Successful');
+            toast.success('Team Creation Successful');
+            toast.info("Please Add your Team Members");
             setLoading(false);
             navigate('/teamPlayerRegistration', { state: { documentID: result.docID, teamName: teamName } });
         } else {

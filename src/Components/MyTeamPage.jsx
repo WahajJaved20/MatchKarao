@@ -34,7 +34,7 @@ function TeamPage() {
     return (<>
         {loading ? <LoadingScreen /> : <><Navbar />
             <div className="inline-block lg:flex lg:justify-between lg:items-center mt-12 w-[100%]">
-                <div className="mt-8 flex flex-col md:flex-row ml-16 flex-wrap">
+                <div className="mt-8 flex flex-col md:flex-row  flex-wrap">
                     {teamData.map((data) => {
                         return (
                             <div className="flex flex-col md:flex-row  mb-8 ml-16 ">
@@ -43,68 +43,15 @@ function TeamPage() {
                                     <h1 className="ml-8 font-Changa text-black text-2xl font-bold lg:mt-0 ">{data.playerName}</h1>
                                     <div className="flex flex-col ml-8">
                                         <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Age: {data.age}</h2>
+                                        <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Preferred Foot: {data.feetLiking}</h2>
+                                        <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Position: {data.position}</h2>
                                         <h2 className="text-black flex flex-row text-extendedNameColor font-circularStd font-semibold text-lg ">Height: {data.height}</h2>
                                     </div>
                                 </div>
                             </div>
                         )
                     })}
-                    {teamData.map((data) => {
-                        return (
-                            <div className="flex flex-col md:flex-row  mb-8 ml-16 ">
-                                <img src={data.picture} alt="circle" className="w-16 h-16 ml-8 my-2" />
-                                <div className="flex flex-col">
-                                    <h1 className="ml-8 font-Changa text-black text-2xl font-bold lg:mt-0 ">{data.playerName}</h1>
-                                    <div className="flex flex-col ml-8">
-                                        <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Age: {data.age}</h2>
-                                        <h2 className="text-black flex flex-row text-extendedNameColor font-circularStd font-semibold text-lg ">Height: {data.height}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
-                    {teamData.map((data) => {
-                        return (
-                            <div className="flex flex-col md:flex-row  mb-8 ml-16 ">
-                                <img src={data.picture} alt="circle" className="w-16 h-16 ml-8 my-2" />
-                                <div className="flex flex-col">
-                                    <h1 className="ml-8 font-Changa text-black text-2xl font-bold lg:mt-0 ">{data.playerName}</h1>
-                                    <div className="flex flex-col ml-8">
-                                        <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Age: {data.age}</h2>
-                                        <h2 className="text-black flex flex-row text-extendedNameColor font-circularStd font-semibold text-lg ">Height: {data.height}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
-                    {teamData.map((data) => {
-                        return (
-                            <div className="flex flex-col md:flex-row  mb-8 ml-16 ">
-                                <img src={data.picture} alt="circle" className="w-16 h-16 ml-8 my-2" />
-                                <div className="flex flex-col">
-                                    <h1 className="ml-8 font-Changa text-black text-2xl font-bold lg:mt-0 ">{data.playerName}</h1>
-                                    <div className="flex flex-col ml-8">
-                                        <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Age: {data.age}</h2>
-                                        <h2 className="text-black flex flex-row text-extendedNameColor font-circularStd font-semibold text-lg ">Height: {data.height}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
-                    {teamData.map((data) => {
-                        return (
-                            <div className="flex flex-col md:flex-row  mb-8 ml-16 ">
-                                <img src={data.picture} alt="circle" className="w-16 h-16 ml-8 my-2" />
-                                <div className="flex flex-col">
-                                    <h1 className="ml-8 font-Changa text-black text-2xl font-bold lg:mt-0 ">{data.playerName}</h1>
-                                    <div className="flex flex-col ml-8">
-                                        <h2 className="text-black text-black font-circularStd font-semibold text-lg ">Age: {data.age}</h2>
-                                        <h2 className="text-black flex flex-row text-extendedNameColor font-circularStd font-semibold text-lg ">Height: {data.height}</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        )
-                    })}
+                    
                 </div>
             </div></>}
 

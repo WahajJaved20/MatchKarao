@@ -177,7 +177,7 @@ const Dashboard = () => {
 		for (var i = 0; i < halfBookings.length; i++) {
 			if (halfBookings[i].bookingConfirmation === "true" && (halfBookings[i].teamID == teamID || halfBookings[i].teamTwoID == teamID)) {
 				confirmed.push(halfBookings[i])
-			} else {
+			} else if(halfBookings[i].bookingConfirmation === "false"){
 				unconfirmed.push(halfBookings[i])
 			}
 		}

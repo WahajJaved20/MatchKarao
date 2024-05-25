@@ -44,7 +44,6 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 				ticketID: halfBooking._id
 			})
 		}).then((resp) => resp.json());
-		console.log(result)
 		if (result.type === "Success") {
 			await helper();
 			toast.success("Booking Successful")
@@ -66,12 +65,13 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 							<p className="ml-2 font-Changa font-bold text-ticketText text-xl">{halfBooking.teamName}</p>
 
 						</div>
-						<p className="font-Changa font-bold text-2xl text-ticketText ">VS</p>
-						<div className="flex flex-row items-center">
-							<img class="w-[60px] h-[60px] rounded-full bg-secondaryColor" src={halfBooking.teamTwoImage ? halfBooking.teamTwoImage : defaultAvatar} alt="Rounded avatar" />
-							<p className="ml-2 font-Changa font-bold text-xl text-ticketText ">{halfBooking.teamTwoName ? halfBooking.teamTwoName : "TBD"}</p>
+						{halfBooking.bookingType === "Half Booking" ? <><p className="font-Changa font-bold text-2xl text-ticketText ">VS</p>
+							<div className="flex flex-row items-center">
+								<img class="w-[60px] h-[60px] rounded-full bg-secondaryColor" src={halfBooking.teamTwoImage ? halfBooking.teamTwoImage : defaultAvatar} alt="Rounded avatar" />
+								<p className="ml-2 font-Changa font-bold text-xl text-ticketText ">{halfBooking.teamTwoName ? halfBooking.teamTwoName : "TBD"}</p>
 
-						</div>
+							</div></> : <></>}
+
 
 					</div>
 					<div className="ml-4 flex flex-row mt-2 items-center">
@@ -88,11 +88,11 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 					</div>
 					<button
 						onClick={AskToPlay}
-						disabled={halfBooking.teamTwoID}
+						disabled={halfBooking.teamTwoID || halfBooking.bookingType === "Full Booking"}
 						className={`px-2 border-2 border-black min-h-6  text-black font-Changa text-sm mt-2 w-full hover:bg-loginKaDabba hover:text-white`}
 					>
 						<h1 className="text-lg font-extrabold text-ticketText hover:text-white">
-							{halfBooking.teamTwoID ? "BOOKED!" : "Ask To Play"}
+							{halfBooking.teamTwoID ? "BOOKED!" : halfBooking.bookingType === "Full Booking" ?  "Fully Booked" : "Ask To Play"}
 						</h1>
 					</button>
 				</div>
@@ -116,7 +116,7 @@ const Dashboard = () => {
 	const initialRightSideHeightRef = useRef(0);
 	const [confirmedHalfBooking, setConfirmedHalfBooking] = useState(null)
 	const [unconfirmedHalfBookings, setUnconfirmedHalfBookings] = useState(null)
-
+	const [fullBookings, setFullBookings] = useState(null)
 	const [locations, setLocations] = useState([]);
 	function listLocations() {
 		const locs = constants["locationWithPrice"]
@@ -154,13 +154,28 @@ const Dashboard = () => {
 			},
 		}).then((resp) => resp.json());
 		if (result.type === "Success") {
-			shortlistBookings(result.result);
+			shortlistHalfBookings(result.result);
 			console.log(result.result)
 			setLoading(false);
 		} else {
 			console.log(result)
 			setLoading(false);
 			toast.error(result.message);
+		}
+		const result2 = await fetch(`https://match-karao-backend.vercel.app/getFullBookings`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		}).then((resp) => resp.json());
+		if (result2.type === "Success") {
+			shortlistFullfBookings(result2.result);
+			console.log(result2.result)
+			setLoading(false);
+		} else {
+			console.log(result2)
+			setLoading(false);
+			toast.error(result2.message);
 		}
 	}
 	useEffect(() => {
@@ -169,20 +184,31 @@ const Dashboard = () => {
 			getHalfBooking();
 		}
 		listLocations();
-	}, [confirmedHalfBooking, unconfirmedHalfBookings])
-	function shortlistBookings(halfBookings) {
+	}, [confirmedHalfBooking, unconfirmedHalfBookings, fullBookings])
+	function shortlistHalfBookings(halfBookings) {
 		var confirmed = []
 		var unconfirmed = []
 		const teamID = localStorage.getItem("teamID");
 		for (var i = 0; i < halfBookings.length; i++) {
 			if (halfBookings[i].bookingConfirmation === "true" && (halfBookings[i].teamID == teamID || halfBookings[i].teamTwoID == teamID)) {
 				confirmed.push(halfBookings[i])
-			} else if(halfBookings[i].bookingConfirmation === "false"){
+			} else if (halfBookings[i].bookingConfirmation === "false") {
 				unconfirmed.push(halfBookings[i])
 			}
 		}
 		setConfirmedHalfBooking(confirmed);
 		setUnconfirmedHalfBookings(unconfirmed);
+	}
+	function shortlistFullfBookings(halfBookings) {
+		var bookings = []
+		const teamID = localStorage.getItem("teamID");
+		for (var i = 0; i < halfBookings.length; i++) {
+			if (halfBookings[i].teamID == teamID) {
+				bookings.push(halfBookings[i])
+			}
+		}
+		console.log(bookings);
+		setFullBookings(bookings);
 	}
 	async function filterBookings() {
 		setLoading(true)
@@ -200,7 +226,7 @@ const Dashboard = () => {
 		}).then((resp) => resp.json());
 		console.log(result)
 		if (result.type === "Success") {
-			shortlistBookings(result.results);
+			shortlistHalfBookings(result.results);
 			toast.success("Cleared All Filters")
 			setLoading(false);
 		} else {
@@ -334,9 +360,13 @@ const Dashboard = () => {
 						<div className="m-4 flex flex-col">
 							<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">CONFIRMED BOOKINGS</label>
 							<div className="flex flex-row">
+								{fullBookings ? fullBookings.map((fullBooking, index) => {
+									return <Ticket halfBooking={fullBooking} key={index} helper={getHalfBooking} setLoading={setLoading} />
+								}) : <div></div>}
 								{confirmedHalfBooking ? confirmedHalfBooking.map((halfBooking, index) => {
 									return <Ticket halfBooking={halfBooking} key={index} helper={getHalfBooking} setLoading={setLoading} />
 								}) : <div></div>}
+
 							</div>
 						</div>
 						<div className="m-4 flex flex-col">

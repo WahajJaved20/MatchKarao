@@ -65,6 +65,11 @@ const Navbar = () => {
           </Link>
         </li>
         <li>
+          <Link to="/teamPage">
+          <div className="block py-2 px-3 text-black rounded  font-Changa font-bold md:p-0 hover:text-white" >My Team</div>
+          </Link>
+        </li>
+        <li>
         <Link to="/about">
           <div className="block py-2 px-3 text-black rounded  md:border-0 font-Changa font-bold md:p-0 hover:text-white ">About Us</div>
           </Link>

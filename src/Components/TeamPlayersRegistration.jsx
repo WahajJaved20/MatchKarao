@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import LoadingBar from './LoadingScreen';
 import Navbar from './Navbar';
 import imageCompression from 'browser-image-compression';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./SelectUI"
 
 function InputBox({ label, name, type, value, handleChange, isRequired, error, index }) {
   let textColor = error ? "text-red-600" : "text-black"
@@ -44,8 +45,9 @@ function InputBox({ label, name, type, value, handleChange, isRequired, error, i
 }
 const defaultInformation = {
   playerName: "",
-  // position: "",
+  position: "",
   height: "",
+  feetLiking: "",
   // weight: "",
   age: "",
   picture: "",
@@ -57,6 +59,10 @@ const TeamPlayersRegistration = () => {
   const documentID = location.state?.documentID;
   const teamName = location.state?.teamName;
   const [playersInformation, setPlayerInformation] = React.useState([defaultInformation]);
+  const [feetLiking, setFeetLiking] = React.useState("Right");
+  const feet = ["Right", "Left"];
+  const positions = ["GK", "RB", "CB", "LB", "CDM", "CM", "CAM", "RW", "LW", "ST"]
+  const [position, setPosition] = React.useState("GK");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -142,7 +148,7 @@ const TeamPlayersRegistration = () => {
       <>
         <Navbar />
         <div className='flex flex-col items-center'>
-          <div className="flex flex-col justify-content-center">
+          <div className="flex flex-col justify-content-center font-Changa font-bold">
             <h1 className="mt-16 font-Changa font-extrabold text-[30px] md:text-[50px] lg:text-[80px] sm:mb-8 md:mb-8">
               Enter Player Details
             </h1>
@@ -185,6 +191,123 @@ const TeamPlayersRegistration = () => {
                   // error={error.teamName}
                   handleChange={handleInputChange}
                 />
+                <div className="m-4">
+								<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">Preferred Foot</label>
+								<div className="outline-none mb-4 w-[100%] border-4 border-black relative font-Changa">
+									<Select
+
+										className="bg-white text-black p-10 w-[100%] outline-none"
+                    
+										onValueChange={(value) => {
+                      setPlayerInformation((prevState) => {
+                        const updatedPlayersInformation = prevState.map((player, i) =>
+                          i === index ? { ...player, ["feetLiking"]: value } : player
+                        );
+                        return updatedPlayersInformation;
+                      });
+										}
+										}
+									>
+										<SelectTrigger
+											aria-label="Social Media Activity"
+											className="bg-white text-black focus:ring-0"
+										>
+											<SelectValue
+												placeholder="Select Feet"
+												className="text-black"
+											/>
+										</SelectTrigger>
+										<SelectContent className="bg-loginKaDabba font-circularStd text-white border-0 focus:ring-0">
+											<SelectGroup>
+												<SelectLabel>Select Foot Style</SelectLabel>
+												{feet.map((loc) => {
+
+													return (
+														<SelectItem
+															value={loc}
+															className="hover:bg-slate-900 b-2"
+														>
+															{loc}
+														</SelectItem>
+													)
+												})}
+											</SelectGroup>
+										</SelectContent>
+									</Select>
+									<div className="absolute inset-y-0 end-1 right-2 top-1 flex items-center pointer-events-none">
+										<svg
+											width="20"
+											height="20"
+											viewBox="0 0 41 35"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path
+												d="M20.4485 34.7642L40.0663 0.785213H0.830776L20.4485 34.7642Z"
+												fill="black"
+											/>
+										</svg>
+									</div>
+								</div>
+							</div>
+              <div className="m-4">
+								<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">Position</label>
+								<div className="outline-none mb-4 w-[100%] border-4 border-black relative font-Changa">
+									<Select
+
+										className="bg-white text-black p-10 w-[100%] outline-none"
+										onValueChange={(value) => {
+                      setPlayerInformation((prevState) => {
+                        const updatedPlayersInformation = prevState.map((player, i) =>
+                          i === index ? { ...player, ["position"]: value } : player
+                        );
+                        return updatedPlayersInformation;
+                      });
+										}
+										}
+									>
+										<SelectTrigger
+											aria-label="Social Media Activity"
+											className="bg-white text-black focus:ring-0"
+										>
+											<SelectValue
+												placeholder="Select Position"
+												className="text-black"
+											/>
+										</SelectTrigger>
+										<SelectContent className="bg-loginKaDabba font-circularStd text-white border-0 focus:ring-0">
+											<SelectGroup>
+												<SelectLabel>Select Position</SelectLabel>
+												{positions.map((loc) => {
+
+													return (
+														<SelectItem
+															value={loc}
+															className="hover:bg-slate-900 b-2"
+														>
+															{loc}
+														</SelectItem>
+													)
+												})}
+											</SelectGroup>
+										</SelectContent>
+									</Select>
+									<div className="absolute inset-y-0 end-1 right-2 top-1 flex items-center pointer-events-none">
+										<svg
+											width="20"
+											height="20"
+											viewBox="0 0 41 35"
+											fill="none"
+											xmlns="http://www.w3.org/2000/svg"
+										>
+											<path
+												d="M20.4485 34.7642L40.0663 0.785213H0.830776L20.4485 34.7642Z"
+												fill="black"
+											/>
+										</svg>
+									</div>
+								</div>
+							</div>
               </>
             ))}
             <div className='flex flex-col md:flex-row justify-center'>

@@ -10,6 +10,7 @@ import SplashScreen from './Components/SplashScreen.jsx'
 import Dashboard from './Components/Dashboard.jsx'
 import NewBookingPage from './Components/NewBookingPage.jsx'
 import Board from './Components/NotificationsPage.jsx'
+import TeamPage from './Components/MyTeamPage.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/newBooking" element={<NewBookingPage />} />
         <Route path="/bookings" element={<Board />} />
+        <Route path="/teamPage" element={<TeamPage />} />
       </Routes>
     </BrowserRouter>
     <ToastContainer

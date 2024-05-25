@@ -104,7 +104,7 @@ const TeamPlayersRegistration = () => {
       reader.onloadend = () => {
         setPlayerInformation((prevState) => {
           const updatedPlayersInformation = prevState.map((player, i) =>
-            i === index ? { ...player, [picture]: reader.result } : player
+            i === index ? { ...player, ["picture"]: reader.result } : player
           );
           return updatedPlayersInformation;
         });
@@ -128,7 +128,9 @@ const TeamPlayersRegistration = () => {
       }
     }
     setLoading(true);
-    const result = await fetch(`https://match-karao-backend.vercel.app/addTeamMembers`, {
+    // const result = await fetch(`https://match-karao-backend.vercel.app/addTeamMembers`, {
+    const result = await fetch(`http://localhost:5000/addTeamMembers`, {
+
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -49,7 +49,6 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 			toast.success("Request Sent")
 			setLoading(false);
 		} else {
-			console.log(result)
 			setLoading(false);
 			toast.error(result.message);
 		}
@@ -126,26 +125,6 @@ const Dashboard = () => {
 		}
 		setLocations(tempList);
 	}
-	// useEffect(() => {
-	//   console.log(teamID)
-	//   const timeoutId = setTimeout(() => {
-	//     setShowSplash(false);
-	//     // navigate('/your-destination-page'); // Navigate on timeout
-	//   }, 3000); // Hide splash after 2 seconds (adjust as needed)
-
-	//   return () => clearTimeout(timeoutId);
-	// })
-	// useEffect(() => {
-	//   const handleScroll = () => {
-	//     const height = initialRightSideHeightRef.current.offsetHeight;
-	//     console.log("Div height:", height);
-	//     setLeftSideHeight(leftSideHeight + height);
-
-	//   };
-	//   window.addEventListener('scroll', handleScroll);
-
-	//   return () => window.removeEventListener('scroll', handleScroll);
-	// }, []);
 	async function getHalfBooking() {
 		const result = await fetch(`https://match-karao-backend.vercel.app/getHalfBookings`, {
 			method: 'GET',
@@ -155,10 +134,8 @@ const Dashboard = () => {
 		}).then((resp) => resp.json());
 		if (result.type === "Success") {
 			shortlistHalfBookings(result.result);
-			console.log(result.result)
 			setLoading(false);
 		} else {
-			console.log(result)
 			setLoading(false);
 			toast.error(result.message);
 		}
@@ -170,10 +147,8 @@ const Dashboard = () => {
 		}).then((resp) => resp.json());
 		if (result2.type === "Success") {
 			shortlistFullfBookings(result2.result);
-			console.log(result2.result)
 			setLoading(false);
 		} else {
-			console.log(result2)
 			setLoading(false);
 			toast.error(result2.message);
 		}
@@ -207,7 +182,6 @@ const Dashboard = () => {
 				bookings.push(halfBookings[i])
 			}
 		}
-		console.log(bookings);
 		setFullBookings(bookings);
 	}
 	async function filterBookings() {
@@ -224,12 +198,10 @@ const Dashboard = () => {
 				endTime: endTime
 			})
 		}).then((resp) => resp.json());
-		console.log(result)
 		if (result.type === "Success") {
 			shortlistHalfBookings(result.results);
 			setLoading(false);
 		} else {
-			console.log(result)
 			setLoading(false);
 			toast.error(result.message);
 		}

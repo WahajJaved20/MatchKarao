@@ -16,13 +16,11 @@ const NotificationCard = ({ message, setLoading, getNotifications }) => {
             },
             body: JSON.stringify({ notification: notification })
         }).then((resp) => resp.json());
-        console.log(result)
         if (result.type === "Success") {
             toast.success("Successfully Accepted Request")
             setLoading(false);
             getNotifications();
         } else {
-            console.log(result)
             setLoading(false);
             toast.error(result.message);
         }
@@ -37,14 +35,12 @@ const NotificationCard = ({ message, setLoading, getNotifications }) => {
             },
             body: JSON.stringify({ id: message._id })
         }).then((resp) => resp.json());
-        console.log(result)
         if (result.type === "Success") {
             toast.success("Request Dismissed")
             setLoading(false);
             getNotifications();
 
         } else {
-            console.log(result)
             setLoading(false);
             toast.error(result.message);
         }
@@ -97,11 +93,9 @@ const Board = () => {
                 teamID: localStorage.getItem("teamID")
             })
         }).then((resp) => resp.json());
-        console.log(result)
         if (result.type === "Success") {
             setNotifications(result.notifications);
         } else {
-            console.log(result)
         }
     }
     useEffect(() => {

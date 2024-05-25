@@ -29,18 +29,15 @@ const Navbar = () => {
               teamID: localStorage.getItem("teamID")
             })
           }).then((resp) => resp.json());
-          console.log(result)
           if (result.type === "Success" && result.notifications == true) {
             setUnreadNotifs(true);
           } else {
-            console.log(result)
           }
       }
       if(counter < 2){
         getNotifications();
         setCounter(counter + 1);
       }
-      console.log(unreadNotifs)
     })
 
     return (

@@ -17,11 +17,9 @@ function TeamPage() {
             body: JSON.stringify({ id: id })
         }).then((resp) => resp.json());
         if (result.type === "Success") {
-            console.log(result.result[0])
             setTeamData(result.result[0].teamMembers)
             setLoading(false);
         } else {
-            console.log(result)
             setLoading(false);
             toast.error(result.message);
         }

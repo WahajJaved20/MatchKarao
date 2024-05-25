@@ -100,8 +100,6 @@ const NewBookingPage = ({teamID}) => {
     for (var key in currLocVens) {
       venList.push(key)
     }
-    console.log(venList)
-    console.log(currLocVens)
     setVenues(venList)
   }
   useEffect(() => {
@@ -129,7 +127,6 @@ const NewBookingPage = ({teamID}) => {
       teamID: localStorage.getItem("teamID"),
       venue: venue
     }
-    console.log(formData)
     const result = await fetch(`https://match-karao-backend.vercel.app/createNewBooking`, {
         method: 'POST',
         headers: {
@@ -138,12 +135,10 @@ const NewBookingPage = ({teamID}) => {
         body: JSON.stringify(formData),
     }).then((resp) => resp.json());
     if (result.type === "Success") {
-        console.log(result.message)
         toast.success('Booking Successfully Created');
         setLoading(false);
         navigate('/');
     } else {
-        console.log(result)
         setLoading(false);
         toast.error(result.message);
     }

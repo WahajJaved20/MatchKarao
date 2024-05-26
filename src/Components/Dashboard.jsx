@@ -328,9 +328,9 @@ const Dashboard = () => {
 					</div>
 					<div className="w-3/5 bg-ticketBackground" id="balls" ref={initialRightSideHeightRef}>
 
-						<div className="m-4 flex flex-col">
+						<div className="m-4 flex flex-col flex-wrap">
 							<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">CONFIRMED BOOKINGS</label>
-							<div className="flex flex-row">
+							<div className="flex flex-row flex-wrap">
 								{fullBookings ? fullBookings.map((fullBooking, index) => {
 									return <Ticket halfBooking={fullBooking} key={index} helper={getHalfBooking} setLoading={setLoading} />
 								}) : <div></div>}
@@ -340,9 +340,9 @@ const Dashboard = () => {
 
 							</div>
 						</div>
-						<div className="m-4 flex flex-col">
+						<div className="m-4 flex flex-col flex-wrap">
 							<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">HALF BOOKINGS</label>
-							<div className="flex flex-row">
+							<div className="flex flex-row flex-wrap">
 								{unconfirmedHalfBookings ? unconfirmedHalfBookings.map((halfBooking, index) => {
 									return <Ticket halfBooking={halfBooking} key={index} helper={getHalfBooking} setLoading={setLoading} />
 								}) : <div></div>}

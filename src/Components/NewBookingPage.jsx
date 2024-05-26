@@ -64,7 +64,7 @@ function RadioGroup({ options, onChange, value }) {
   );
 }
 
-const NewBookingPage = ({teamID}) => {
+const NewBookingPage = ({ teamID }) => {
   const options = [
     { value: 'Full Booking', label: 'Full Booking' },
     { value: 'Half Booking', label: 'Half Booking' },
@@ -90,7 +90,7 @@ const NewBookingPage = ({teamID}) => {
     setLocations(tempList);
   }
   function listAvailableTimes() {
-    setAvailableTimes(constants["availableTimes"])
+    setAvailableTimes()
   }
   function listVenues(value) {
     const vens = constants["locationWithPrice"]
@@ -102,12 +102,35 @@ const NewBookingPage = ({teamID}) => {
     }
     setVenues(venList)
   }
+  async function updateAvailaibleTimes() {
+    const result = await fetch(`https://match-karao-backend.vercel.app/getAvailaibleTimes`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ date: date }),
+    }).then((resp) => resp.json());
+    if (result.type === "Success") {
+      setAvailableTimes([])
+      var timings = result.result;
+      console.log(timings)
+      var tempTimes = constants["availableTimes"];
+      const unavailableTimeSlots = new Set(timings.map(time => time.startTime.split(":")[0]));
+      tempTimes = tempTimes.filter(time => !unavailableTimeSlots.has(time.startTime.split(":")[0])); // Filter based on start time hour
+
+      setAvailableTimes(tempTimes);
+      toast.success('Available Timings Updated');
+
+    } else {
+      setLoading(false);
+      toast.error(result.message);
+    }
+  }
   useEffect(() => {
     if (locations.length == 0) {
       listLocations()
-      listAvailableTimes()
     }
-  })
+  },[availableTimes])
   const handleSubmit = async () => {
     if (selectedValue.length === 0 || location.length === 0 || date.length === 0 || startTime.length === 0
       || endTime.length === 0
@@ -128,19 +151,19 @@ const NewBookingPage = ({teamID}) => {
       venue: venue
     }
     const result = await fetch(`https://match-karao-backend.vercel.app/createNewBooking`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
     }).then((resp) => resp.json());
     if (result.type === "Success") {
-        toast.success('Booking Successfully Created');
-        setLoading(false);
-        navigate('/');
+      toast.success('Booking Successfully Created');
+      setLoading(false);
+      navigate('/');
     } else {
-        setLoading(false);
-        toast.error(result.message);
+      setLoading(false);
+      toast.error(result.message);
     }
   }
   return (
@@ -269,7 +292,10 @@ const NewBookingPage = ({teamID}) => {
               value={date}
               isRequired={true}
               // error={error.teamName}
-              handleChange={setDate}
+              handleChange={(value)=>{
+                setDate(value);
+                updateAvailaibleTimes();
+              }}
             />
             <h1 className={`font-Changa text-2xl text-black font-bold mb-2`}>{"AVAILABLE TIME:"}</h1>
 

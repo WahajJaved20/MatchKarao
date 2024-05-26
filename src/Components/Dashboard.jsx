@@ -55,8 +55,8 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 	}
 	return (
 		<div key={key} className="relative inline-block m-4">
-			<img src={ticketBackground} alt="Your Image" className="w-[380px] h-auto" />
-			<div className="absolute inset-0 flex items-center justify-center  text-white mx-8">
+			<img src={ticketBackground} alt="Your Image" className="w-[380px] h-[220px]" />
+			<div className="absolute inset-0 flex items-center justify-center text-white mx-8">
 				<div className="flex flex-col">
 					<div className="flex flex-row justify-between gap-4 items-center">
 						<div className="flex flex-row items-center">
@@ -212,12 +212,12 @@ const Dashboard = () => {
 		<Navbar />
 		{loading ? <LoadingScreen /> : (
 			<>
-				<div className="h-screen flex">
-					<div className="w-2/5 bg-loginKaDabba flex flex-col items-center" style={{ height: leftSideHeight }}>
+				<div className="h-screen flex flex-col lg:flex-row">
+					<div className="w-full lg:w-2/5 bg-loginKaDabba flex flex-col items-center" style={{ height: leftSideHeight }}>
 						<h1 className="mt-4 font-Changa font-extrabold text-[50px] text-white">
 							FINDER
 						</h1>
-						<div className="m-4 bg-primaryColor rounded-3xl">
+						<div className="m-4 bg-primaryColor rounded-3xl flex flex-row lg:flex-col flex-wrap">
 
 							<div className="m-4">
 								<label className="text-2xl md:text-3xl lg:text-3xl font-bold font-Changa mb-2 mt-8">LOCATION</label>

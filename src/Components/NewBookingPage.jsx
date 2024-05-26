@@ -102,27 +102,27 @@ const NewBookingPage = ({ teamID }) => {
     }
     setVenues(venList)
   }
-  async function updateAvailaibleTimes() {
-    const result = await fetch(`https://match-karao-backend.vercel.app/getAvailaibleTimes`, {
+  async function updateAvailaibleTimes(value) {
+    try{
+      await fetch(`https://match-karao-backend.vercel.app/getAvailaibleTimes`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ date: date }),
-    }).then((resp) => resp.json());
-    if (result.type === "Success") {
-      setAvailableTimes([])
-      var timings = result.result;
-      console.log(timings)
-      var tempTimes = constants["availableTimes"];
-      const unavailableTimeSlots = new Set(timings.map(time => time.startTime.split(":")[0]));
-      tempTimes = tempTimes.filter(time => !unavailableTimeSlots.has(time.startTime.split(":")[0])); // Filter based on start time hour
-
-      setAvailableTimes(tempTimes);
-      toast.success('Available Timings Updated');
-
-    } else {
-      setLoading(false);
+      body: JSON.stringify({ date: value }),
+    }).then(async (resp) =>{
+      const result = await resp.json();
+        setAvailableTimes([])
+        var timings = await result.result;
+        console.log(timings)
+        var tempTimes = constants["availableTimes"];
+        const unavailableTimeSlots = new Set(timings.map(time => time.startTime.split(":")[0]));
+        tempTimes = tempTimes.filter(time => !unavailableTimeSlots.has(time.startTime.split(":")[0])); // Filter based on start time hour
+  
+        setAvailableTimes(tempTimes);
+        toast.success('Available Timings Updated');
+    });
+    }catch(error){
       toast.error(result.message);
     }
   }
@@ -294,7 +294,7 @@ const NewBookingPage = ({ teamID }) => {
               // error={error.teamName}
               handleChange={(value)=>{
                 setDate(value);
-                updateAvailaibleTimes();
+                updateAvailaibleTimes(value);
               }}
             />
             <h1 className={`font-Changa text-2xl text-black font-bold mb-2`}>{"AVAILABLE TIME:"}</h1>

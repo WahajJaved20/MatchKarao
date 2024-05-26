@@ -25,6 +25,28 @@ function PlusButton({ teamID }) {
 }
 
 const Ticket = ({ halfBooking, key, helper, setLoading }) => {
+	const personalTeamID = localStorage.getItem("teamID");
+	async function deleteBooking(){
+		setLoading(true)
+		const result = await fetch(`https://match-karao-backend.vercel.app/deleteBooking`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				bookingType: halfBooking.bookingType,
+				ticketID: halfBooking._id
+			})
+		}).then((resp) => resp.json());
+		if (result.type === "Success") {
+			await helper();
+			toast.success("Booking Deleted")
+			setLoading(false);
+		} else {
+			setLoading(false);
+			toast.error(result.message);
+		}
+	}
 	async function AskToPlay() {
 		setLoading(true)
 		const result = await fetch(`https://match-karao-backend.vercel.app/askToPlay`, {
@@ -85,15 +107,29 @@ const Ticket = ({ halfBooking, key, helper, setLoading }) => {
 						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">|</p>
 						<p className="ml-4 font-Changa font-bold text-lg text-ticketText ">{halfBooking.startTime} - {halfBooking.endTime}</p>
 					</div>
-					<button
-						onClick={AskToPlay}
-						disabled={halfBooking.teamTwoID || halfBooking.bookingType === "Full Booking"}
-						className={`px-2 border-2 border-black min-h-6  text-black font-Changa text-sm mt-2 w-full hover:bg-loginKaDabba hover:text-white`}
-					>
-						<h1 className="text-lg font-extrabold text-ticketText hover:text-white">
-							{halfBooking.teamTwoID ? "BOOKED!" : halfBooking.bookingType === "Full Booking" ?  "Fully Booked" : "Ask To Play"}
-						</h1>
-					</button>
+					<div className="flex flex-row">
+						{halfBooking.teamID !== personalTeamID ? <button
+							onClick={AskToPlay}
+							disabled={halfBooking.teamTwoID || halfBooking.bookingType === "Full Booking" || halfBooking.teamID === personalTeamID}
+							className={`px-2 mr-2 border-2 border-black min-h-6  text-black font-Changa text-sm mt-2 w-full hover:bg-loginKaDabba hover:text-white`}
+						>
+							<h1 className="text-lg font-extrabold text-ticketText hover:text-white">
+								{halfBooking.teamTwoID ? "BOOKED!" : halfBooking.bookingType === "Full Booking" ? "Fully Booked" : "Ask To Play"}
+							</h1>
+						</button>
+							: <></>}
+
+						{!halfBooking.teamTwoID && halfBooking.teamID === personalTeamID ?
+							<button
+								onClick={deleteBooking}
+								className={`px-2 border-2 border-black min-h-6  text-black font-Changa text-sm mt-2 w-full hover:bg-red-400 hover:text-white`}
+							>
+								<h1 className="text-lg font-extrabold text-ticketText hover:text-white">
+									{"Cancel Booking"}
+								</h1>
+							</button> : <></>}
+
+					</div>
 				</div>
 			</div>
 		</div>
